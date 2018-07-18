@@ -1,0 +1,9 @@
+#!/bin/sh
+# SPDX-License-Identifier: LGPL-2.1-or-later
+# Copyright © 2013-2018 ANSSI. All Rights Reserved.
+# This scirpt should run in CLIP RM jails only
+
+DIR=/var/run/ssm_db/softhsm2_tokens/encrypted
+
+mkdir -p $DIR
+/usr/local/bin/fdp-server -d -f /home/user/.ssm-db -s ${DIR}/sqlite3.db -g 0

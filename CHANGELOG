@@ -1,0 +1,73 @@
+# CLIP ChangeLog for app-clip/fdp
+
+*fdp-1.1.5-r1 (12 Aug 2016)
+
+  12 Aug 2016; Nicolas Belouin <clipos@ssi.gouv.fr>
+  +fdp-1.1.5-r1.ebuild, -fdp-1.1.5.ebuild:
+  Move SSM login hook, add dependancy to pam_exec_pwd
+
+*fdp-1.1.5 (16 Dec 2015)
+
+  16 Dec 2015; Piotr Chmielnicki <clipos@ssi.gouv.fr>
+  +fdp-1.1.5.ebuild, -fdp-1.1.4.ebuild:
+  Updated SSM scripts
+
+*fdp-1.1.4 (01 Dec 2015)
+
+  01 Dec 2015; Yves-Alexis Perez <clipos@ssi.gouv.fr>
+  +fdp-1.1.4.ebuild, -fdp-1.1.3.ebuild:
+  Fix build on amd64.
+
+*fdp-1.1.3 (19 Nov 2015)
+
+  19 Nov 2015; Piotr Chmielnicki <clipos@ssi.gouv.fr>
+  +fdp-1.1.3.ebuild, -fdp-1.1.2.ebuild:
+  Explicited key serving script
+
+*fdp-1.1.2 (13 Nov 2015)
+
+  13 Nov 2015; Piotr Chmielnicki <clipos@ssi.gouv.fr>
+  +fdp-1.1.2.ebuild, -fdp-1.1.1.ebuild:
+  Updated ssm-key-serve-* scripts
+
+*fdp-1.1.1 (13 Nov 2015)
+
+  13 Nov 2015; Piotr Chmielnicki <clipos@ssi.gouv.fr>
+  +fdp-1.1.1.ebuild, -fdp-1.1.0.ebuild:
+  Fixed call to pinentri-server in ssm-key-serve from the user jail
+
+*fdp-1.1.0 (03 Nov 2015)
+
+  03 Nov 2015; Piotr Chmielnicki <clipos@ssi.gouv.fr>
+  +fdp-1.1.0.ebuild, -fdp-1.0.3-r1.ebuild:
+  Added init script for fdp/SSM
+
+*fdp-1.0.3-r1 (01 Sep 2015)
+
+  01 Sep 2015; Piotr Chmielnicki <clipos@ssi.gouv.fr>
+  +fdp-1.0.3-r1.ebuild, -fdp-1.0.3.ebuild:
+  Fixed ebuild for debian packaging
+
+*fdp-1.0.3 (06 Dec 2013)
+
+  06 Dec 2013; Mickaël Salaün <clipos@ssi.gouv.fr>
+  +fdp-1.0.3.ebuild, -fdp-1.0.2.ebuild:
+  Fix new file opening.
+
+*fdp-1.0.2 (06 Dec 2013)
+
+  06 Dec 2013; Mickaël Salaün <clipos@ssi.gouv.fr>
+  +fdp-1.0.2.ebuild, -fdp-1.0.1.ebuild:
+  Don't require existing files for fdp-server startup.
+
+*fdp-1.0.1 (06 Dec 2013)
+
+  06 Dec 2013; Mickaël Salaün <clipos@ssi.gouv.fr>
+  +fdp-1.0.1.ebuild, -fdp-1.0.0.ebuild:
+  Fix compilation warning.
+
+*fdp-1.0.0 (28 Nov 2013)
+
+  28 Nov 2013; Mickaël Salaün <clipos@ssi.gouv.fr>
+  +fdp-1.0.0.ebuild:
+  Initial release.

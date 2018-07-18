@@ -1,0 +1,34 @@
+#!/bin/bash
+# SPDX-License-Identifier: LGPL-2.1-or-later
+# Copyright © 2013-2018 ANSSI. All Rights Reserved.
+
+set -e
+source /etc/conf.d/clip
+
+CURRENT_UID="$(stat -c %u /home/user)"
+
+find /var/run/ssm_key \
+    /var/run/ssm_display \
+    /var/run/ssm_db_rm_h \
+    /var/run/ssm_db_rm_b -mindepth 1 -delete
+
+if [ "$(id -n -g  "$(stat -c %U /home/user)")" = 'root' ]
+then
+    exit 0
+fi
+if [ -n "$(echo "$CLIP_JAILS" | grep rm)" ]
+then
+    vsctl -u "$CURRENT_UID" -i /dev/null -o /dev/null user enter /usr/bin/ssm-key-serve-user
+fi
+if [ -n "$(echo "$CLIP_JAILS" | grep rm_h)" ] && [ -f /home/user/ssm-db-rmh-new ]
+then
+    mv /home/user/ssm-db-rmh-new /var/run/ssm_db_rm_h/ssm-db
+    vsctl -u "$CURRENT_UID" -c /user -i /dev/null -o /dev/null rm_h enter -- /bin/mv /var/run/ssm_db/ssm-db /home/user/.ssm-db
+    vsctl -u "$CURRENT_UID" -c /user -i /dev/null -o /dev/null rm_h enter -- /bin/cp -a /home/user/.ssm-db /home/user/.ssm-db.orig
+fi
+if [ -n "$(echo "$CLIP_JAILS" | grep rm_b)" ] && [ -f /home/user/ssm-db-rmb-new ]
+then
+    mv /home/user/ssm-db-rmb-new /var/run/ssm_db_rm_b/ssm-db
+    vsctl -u "$CURRENT_UID" -c /user -i /dev/null -o /dev/null rm_b enter -- /bin/mv /var/run/ssm_db/ssm-db /home/user/.ssm-db
+    vsctl -u "$CURRENT_UID" -c /user -i /dev/null -o /dev/null rm_b enter -- /bin/cp -a /home/user/.ssm-db /home/user/.ssm-db.orig
+fi

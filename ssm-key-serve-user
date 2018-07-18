@@ -1,0 +1,46 @@
+#!/bin/bash
+# SPDX-License-Identifier: LGPL-2.1-or-later
+# Copyright © 2013-2018 ANSSI. All Rights Reserved.
+# This script should run in the CLIP user jail as the logged user
+
+pkill -SIGINT fdp-server
+pkill -SIGINT pinentry-server
+set -e
+
+export SOFTHSM2_CONF=/tmp/softhsm2.conf
+export SOFTHSM2_KEYFILE=/home/user/ssm-key
+
+if [ ! -f "$SOFTHSM2_KEYFILE" ] || [ -f "${SOFTHSM2_KEYFILE}.new" ]
+then
+    PIN=1234
+    SOPIN=1234
+    LABEL='ANSSIPKI'
+
+    rm -rf /tmp/softhsm2*
+    mkdir /tmp/softhsm2_tokens/
+    cat <<EOF > /tmp/softhsm2.conf
+directories.tokendir = /tmp/softhsm2_tokens
+objectstore.backend = db
+EOF
+    if [ -f "${SOFTHSM2_KEYFILE}.new" ]
+    then
+        cat "${SOFTHSM2_KEYFILE}.new" > ${SOFTHSM2_KEYFILE}
+        rm "${SOFTHSM2_KEYFILE}.new"
+    else
+        echo $(head -c 18 /dev/urandom | base64) > ${SOFTHSM2_KEYFILE}
+    fi
+    softhsm2-util --init-token --slot 0 --pin ${PIN} --so-pin ${SOPIN} --label ${LABEL}
+    mv /tmp/softhsm2_tokens/encrypted/sqlite3.db /home/user/ssm-db-rmb-new
+    rm -r /tmp/softhsm2_tokens/encrypted
+    softhsm2-util --init-token --slot 0 --pin ${PIN} --so-pin ${SOPIN} --label ${LABEL}
+    mv /tmp/softhsm2_tokens/encrypted/sqlite3.db /home/user/ssm-db-rmh-new
+    rm -r /tmp/softhsm2*
+fi
+export PATH=${PATH}:/usr/bin:/usr/local/bin
+export DISPLAY=':0'
+export XAUTHORITY=/home/user/.Xauthority
+fdp-server -d -f /home/user/ssm-key -s /var/run/ssm_key/socket -g 0
+if [ -x /usr/local/bin/pinentry-server ]
+then
+    nohup pinentry-server /var/run/ssm_display/socket &
+fi
